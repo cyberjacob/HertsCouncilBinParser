@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 """Parser to retrieve bin collection dates from the Hertfordshire County Council website"""
 import requests
