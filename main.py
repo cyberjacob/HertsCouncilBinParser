@@ -5,6 +5,7 @@ import requests
 from urllib.parse import urlparse, parse_qs
 from bs4 import BeautifulSoup
 import argparse
+from datetime import datetime
 
 
 def __main__():
@@ -22,11 +23,17 @@ def __main__():
     html_data = parse_html(details_html)
 
     if args.refuse:
-        print(get_refuse_date(html_data))
+        time_string = get_refuse_date(html_data)
     elif args.recycling:
-        print(get_recycling_date(html_data))
+        time_string = get_recycling_date(html_data)
     elif args.organic:
-        print(get_organic_date(html_data))
+        time_string = get_organic_date(html_data)
+    else:
+        raise ValueError("Invalid mode")
+
+    time_string = reformat_time(time_string)
+
+    print(time_string)
 
 
 def get_details_html(house_number, postcode):
@@ -98,6 +105,9 @@ Extract the next organic collection date from parsed HTML
     :return:
     """
     return html.find("div", {"id": "CTID-41-_-A"}).text
+
+def reformat_time(time_string):
+    return datetime.strptime(time_string, "%d/%m/%Y").strftime("%Y-%m-%d")
 
 
 if __name__ == "__main__":
